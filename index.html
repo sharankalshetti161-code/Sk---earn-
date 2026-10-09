@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SK EARN</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101522;color:white;font-family:Arial,sans-serif}
+header{background:#172238;padding:22px;text-align:center;color:#41e0a0;font-size:28px;font-weight:bold}
+.card{background:#1c2940;margin:18px;padding:20px;border-radius:16px}
+h2{margin-top:0;color:#41e0a0}
+input{width:100%;padding:13px;margin:7px 0;border:0;border-radius:8px}
+button{width:100%;padding:13px;margin-top:10px;border:0;border-radius:8px;background:#41e0a0;color:#101522;font-weight:bold;font-size:16px}
+.small{color:#c5cee0;font-size:13px;line-height:1.5}
+#app{display:none}
+.coin{font-size:30px;font-weight:bold;text-align:center;padding:12px}
+</style>
+</head>
+<body>
+<header>🪙 SK EARN</header>
+
+<div class="card" id="login">
+<h2>Login / Register</h2>
+<input id="username" placeholder="Enter your name">
+<input id="email" type="email" placeholder="Enter email">
+<input id="password" type="password" placeholder="Create password">
+<button onclick="register()">Register / Login</button>
+<p class="small">Demo version: कृपया खरा पासवर्ड वापरू नका. हा Login फक्त या फोनवरील डेमोसाठी आहे.</p>
+</div>
+
+<div id="app">
+<div class="card">
+<h2>Welcome to SK EARN!</h2>
+<div class="coin">🪙 <span id="coins">0</span> Coins</div>
+<p>100 Coins = ₹50 (Demo calculation)</p>
+<p class="small">जाहिरातीचा डेमो — बटण दाबल्याने खरे पैसे किंवा जाहिरात उत्पन्न मिळत नाही.</p>
+<button onclick="watchAd()">Watch Ad (Demo) +2 Coins</button>
+</div>
+
+<div class="card">
+<h2>Withdraw</h2>
+<p>Minimum: 100 Coins = ₹50</p>
+<input id="upi" placeholder="Enter your UPI ID">
+<button onclick="withdraw()">Request Withdraw</button>
+<p id="withdrawMsg" class="small"></p>
+</div>
+
+<div class="card">
+<h2>Owner Dashboard</h2>
+<p>Demo owner share: 60%</p>
+<p>Demo owner amount: ₹<span id="owner">0</span></p>
+<p class="small">ही फक्त गणना आहे. खरे पैसे मिळत नाहीत.</p>
+<button onclick="logout()">Logout</button>
+</div>
+</div>
+
+<script>
+let coins=Number(localStorage.getItem("skEarnCoins")||0);
+
+function register(){
+ const name=document.getElementById("username").value.trim();
+ const email=document.getElementById("email").value.trim();
+ const pass=document.getElementById("password").value;
+ if(!name||!email||!pass){alert("Please fill all fields");return;}
+ if(pass.length<6){alert("Demo password must be at least 6 characters");return;}
+ localStorage.setItem("skEarnName",name);
+ document.getElementById("login").style.display="none";
+ document.getElementById("app").style.display="block";
+ update();
+}
+
+function watchAd(){
+ alert("Demo only: no real advertisement was shown.");
+ coins+=2;
+ localStorage.setItem("skEarnCoins",coins);
+ update();
+}
+
+function update(){
+ document.getElementById("coins").textContent=coins;
+ document.getElementById("owner").textContent=(Math.floor(coins/100)*50*0.6).toFixed(2);
+}
+
+function withdraw(){
+ const upi=document.getElementById("upi").value.trim();
+ if(coins<100){document.getElementById("withdrawMsg").textContent="Withdraw साठी किमान 100 Coins आवश्यक आहेत.";return;}
+ if(!upi.includes("@")){document.getElementById("withdrawMsg").textContent="कृपया योग्य UPI ID टाका.";return;}
+ document.getElementById("withdrawMsg").textContent="Demo request तयार झाली. खरे पैसे पाठवलेले नाहीत.";
+}
+
+function logout(){
+ document.getElementById("app").style.display="none";
+ document.getElementById("login").style.display="block";
+}
+
+if(localStorage.getItem("skEarnName")){
+ document.getElementById("username").value=localStorage.getItem("skEarnName");
+ document.getElementById("login").style.display="none";
+ document.getElementById("app").style.display="block";
+}
+update();
+</script>
+</body>
+  </html>
